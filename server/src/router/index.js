@@ -36,6 +36,12 @@ router.post(
 
 router.use('/contests', contestsRouter);
 
+router.post(
+  '/dataForContest',
+  checkToken.checkToken,
+  contestController.dataForContest
+);
+
 // router.post(
 //   '/pay',
 //   checkToken.checkToken,
@@ -46,24 +52,18 @@ router.use('/contests', contestsRouter);
 //   userController.payment
 // );
 
-router.post(
-  '/dataForContest',
-  checkToken.checkToken,
-  contestController.dataForContest
-);
-
 // router.post(
 //   '/dataForContest',
 //   checkToken.checkToken,
 //   contestController.getCustomersContests
 // );
 
-router.get(
-  '/getContestById',
-  checkToken.checkToken,
-  basicMiddlewares.canGetContest,
-  contestController.getContestById
-);
+// router.get(
+//   '/getContestById',
+//   checkToken.checkToken,
+//   basicMiddlewares.canGetContest,
+//   contestController.getContestById
+// );
 
 router.post(
   '/getAllContests',
