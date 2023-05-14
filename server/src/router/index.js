@@ -10,6 +10,10 @@ const upload = require('../utils/fileUpload');
 const contestsRouter = require('./contestRouter');
 const router = express.Router();
 
+// offers
+
+router.get('/offers', contestController.getAllOffers);
+
 // auth
 
 router.post(
