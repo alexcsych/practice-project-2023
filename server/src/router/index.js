@@ -9,6 +9,8 @@ const chatController = require('../controllers/chatController');
 const upload = require('../utils/fileUpload');
 const router = express.Router();
 
+// auth
+
 router.post(
   '/registration',
   validators.validateRegistrationData,
@@ -18,20 +20,23 @@ router.post(
 
 router.post('/login', validators.validateLogin, userController.login);
 
+// users
+
+router.post('/getUser', checkToken.checkAuth);
+
+router.post(
+  '/updateUser',
+  checkToken.checkToken,
+  upload.uploadAvatar,
+  userController.updateUser
+);
+
+//contests
+
 router.post(
   '/dataForContest',
   checkToken.checkToken,
   contestController.dataForContest
-);
-
-router.post(
-  '/pay',
-  checkToken.checkToken,
-  basicMiddlewares.onlyForCustomer,
-  upload.uploadContestFiles,
-  basicMiddlewares.parseBody,
-  validators.validateContestCreation,
-  userController.payment
 );
 
 router.post(
@@ -54,7 +59,12 @@ router.post(
   contestController.getContests
 );
 
-router.post('/getUser', checkToken.checkAuth);
+router.post(
+  '/updateContest',
+  checkToken.checkToken,
+  upload.updateContestFile,
+  contestController.updateContest
+);
 
 router.get(
   '/downloadFile/:fileName',
@@ -62,12 +72,7 @@ router.get(
   contestController.downloadFile
 );
 
-router.post(
-  '/updateContest',
-  checkToken.checkToken,
-  upload.updateContestFile,
-  contestController.updateContest
-);
+// offers
 
 router.post(
   '/setNewOffer',
@@ -91,19 +96,7 @@ router.post(
   userController.changeMark
 );
 
-router.post(
-  '/updateUser',
-  checkToken.checkToken,
-  upload.uploadAvatar,
-  userController.updateUser
-);
-
-router.post(
-  '/cashout',
-  checkToken.checkToken,
-  basicMiddlewares.onlyForCreative,
-  userController.cashout
-);
+//chat
 
 router.post('/newMessage', checkToken.checkToken, chatController.addMessage);
 
@@ -146,5 +139,24 @@ router.post(
 );
 
 router.post('/getCatalogs', checkToken.checkToken, chatController.getCatalogs);
+
+// payment
+
+router.post(
+  '/pay',
+  checkToken.checkToken,
+  basicMiddlewares.onlyForCustomer,
+  upload.uploadContestFiles,
+  basicMiddlewares.parseBody,
+  validators.validateContestCreation,
+  userController.payment
+);
+
+router.post(
+  '/cashout',
+  checkToken.checkToken,
+  basicMiddlewares.onlyForCreative,
+  userController.cashout
+);
 
 module.exports = router;
