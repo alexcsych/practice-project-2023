@@ -9,15 +9,27 @@ const contestController = require('../controllers/contestController');
 
 const contestsRouter = Router();
 
-contestsRouter.post(
-  '/',
-  checkToken.checkToken,
-  basicMiddlewares.onlyForCustomer,
-  upload.uploadContestFiles,
-  basicMiddlewares.parseBody,
-  validators.validateContestCreation,
-  userController.payment
-);
+contestsRouter
+  .route('/')
+  .post(
+    checkToken.checkToken,
+    basicMiddlewares.onlyForCustomer,
+    upload.uploadContestFiles,
+    basicMiddlewares.parseBody,
+    validators.validateContestCreation,
+    userController.payment
+  )
+  .get(
+    checkToken.checkToken,
+    queryParser({
+      parseNull: true,
+      parseUndefined: true,
+      parseBoolean: true,
+      parseNumber: true,
+    }),
+    basicMiddlewares.onlyForCreative,
+    contestController.getContests
+  );
 
 contestsRouter.get(
   '/byCustomer',

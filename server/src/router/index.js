@@ -69,12 +69,12 @@ router.post(
 //   contestController.getContestById
 // );
 
-router.post(
-  '/getAllContests',
-  checkToken.checkToken,
-  basicMiddlewares.onlyForCreative,
-  contestController.getContests
-);
+// router.post(
+//   '/getAllContests',
+//   checkToken.checkToken,
+//   basicMiddlewares.onlyForCreative,
+//   contestController.getContests
+// );
 
 router.post(
   '/updateContest',
